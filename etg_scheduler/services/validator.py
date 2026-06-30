@@ -39,6 +39,8 @@ class ScenarioValidator:
             errors.append("Scenario must contain at least one task.")
         if not scenario.resources:
             errors.append("Scenario must contain at least one resource.")
+        if scenario.time_constraint is not None and scenario.time_constraint <= 0:
+            errors.append("Scenario time constraint must be greater than zero.")
 
     def _validate_tasks(self, scenario: Scenario, errors: list[str]) -> None:
         for task in scenario.tasks:

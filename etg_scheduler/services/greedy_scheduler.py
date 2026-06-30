@@ -57,6 +57,8 @@ class GreedyScheduler:
             optimization_mode=mode,
             scheduled_tasks=scheduled_tasks,
             summary=summary,
+            algorithm="Greedy",
+            time_constraint=scenario.time_constraint,
         )
 
     def _build_candidates(

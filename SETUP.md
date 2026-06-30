@@ -113,6 +113,13 @@ source .venv/bin/activate
 python -m etg_scheduler --scenario scenarios/hospital.json --mode Balanced
 ```
 
+Run the water power plant scenario with the genetic algorithm:
+
+```bash
+source .venv/bin/activate
+python -m etg_scheduler --scenario scenarios/water_power_plant.json --algorithm genetic
+```
+
 Run tests:
 
 ```bash

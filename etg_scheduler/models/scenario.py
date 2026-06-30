@@ -12,3 +12,4 @@ class Scenario:
     tasks: list[Task]
     resources: list[Resource]
     default_optimization_mode: OptimizationMode = OptimizationMode.BALANCED
+    time_constraint: float | None = None

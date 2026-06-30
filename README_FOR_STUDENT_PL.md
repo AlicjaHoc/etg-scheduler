@@ -4,6 +4,8 @@ Ten projekt jest aplikacja konsolowa w Pythonie do harmonogramowania rozszerzone
 
 Projekt jest przygotowany jako praktyczna praca akademicka. Kod jest prosty, czytelny i skupiony na algorytmie, a nie na dodatkowej infrastrukturze.
 
+Glowny scenariusz projektu dotyczy procesu budowy elektrowni wodnej. Program nadal potrafi wczytac dowolny scenariusz ETG zapisany w tym samym formacie JSON.
+
 ## Co robi aplikacja
 
 Aplikacja:
@@ -15,6 +17,7 @@ Aplikacja:
 - wykrywa cykle,
 - sprawdza, czy kazde zadanie moze dostac zgodny zestaw zasobow,
 - buduje harmonogram metoda zachlanna,
+- moze uzyc algorytmu genetycznego do minimalizacji kosztu przy ograniczeniu czasu,
 - oblicza czas startu i zakonczenia kazdego zadania,
 - oblicza koszt kazdego zadania,
 - oblicza laczny czas wykonania i laczny koszt,
@@ -193,13 +196,16 @@ Ten tryb lekko bardziej ceni czas, ale nadal uwzglednia koszt.
 
 ## Scenariusze przykladowe
 
-Projekt zawiera trzy scenariusze:
+Projekt zawiera cztery scenariusze:
 
+- `scenarios/water_power_plant.json` - budowa elektrowni wodnej,
 - `scenarios/hospital.json` - proces szpitalny,
 - `scenarios/production_line.json` - linia produkcyjna,
 - `scenarios/logistics_warehouse.json` - magazyn logistyczny.
 
 Scenariusze pokazują wszystkie typy zadan i oba typy zasobow.
+
+W scenariuszu elektrowni wodnej pole `time_constraint` oznacza maksymalny dopuszczalny czas harmonogramu dla algorytmu genetycznego.
 
 ## Jak uruchomic projekt
 
@@ -240,6 +246,18 @@ python -m etg_scheduler
 ```
 
 ## Jak uruchomic konkretny scenariusz
+
+Scenariusz wymagany w temacie projektu:
+
+```bash
+python -m etg_scheduler --scenario scenarios/water_power_plant.json --algorithm genetic
+```
+
+Z wlasnym ograniczeniem czasu:
+
+```bash
+python -m etg_scheduler --scenario scenarios/water_power_plant.json --algorithm genetic --time-constraint 48
+```
 
 ```bash
 python -m etg_scheduler --scenario scenarios/hospital.json --mode Balanced

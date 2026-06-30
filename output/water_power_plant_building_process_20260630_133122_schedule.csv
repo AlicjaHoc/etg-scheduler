@@ -1,0 +1,12 @@
+task_id,task_name,task_type,start_time,finish_time,duration,resource_ids,resource_names,cost
+w1,Prepare construction site,CGT,0,4.76,4.76,crane_fast;general_team_1,Fast crane operator;General construction team 1,914.29
+w2,Survey river bed,DT,4.76,8.76,4,survey_team,Survey team,430.00
+w3,Build temporary cofferdam,CDT,8.76,14.72,5.96,civil_senior;crane_fast,Senior civil engineer;Fast crane operator,1780.85
+w4,Pour concrete foundation,CDT,14.72,22.16,7.44,civil_senior;concrete_team,Senior civil engineer;Concrete team,2537.21
+w5,Install water intake gate,CDT,22.16,26.92,4.76,mechanical_basic;crane_fast,Basic mechanical engineer;Fast crane operator,1259.52
+w8,Build control room,GT,22.16,26.87,4.71,general_team_2,General construction team 2,535.29
+w6,Install turbine,CDT,26.92,32.78,5.85,mechanical_basic;turbine_team,Basic mechanical engineer;Turbine specialist team,1970.73
+w7,Install generator,CDT,32.78,37.65,4.88,electrical_engineer;generator_team,Electrical engineer;Generator specialist team,1700.00
+w9,Connect control system,DT,37.65,41.65,4,automation_team,Automation engineer,710.00
+w10,Safety inspection,DT,41.65,44.65,3,safety_inspector,Safety inspector,435.00
+w11,Trial operation,UT,44.65,47.99,3.33,general_team_1,General construction team 1,303.33

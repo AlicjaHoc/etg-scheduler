@@ -5,6 +5,7 @@ from etg_scheduler.models.resource import Resource
 from etg_scheduler.models.scenario import Scenario
 from etg_scheduler.models.task import Task
 from etg_scheduler.services.greedy_scheduler import GreedyScheduler
+from etg_scheduler.services.genetic_scheduler import GeneticScheduler
 from etg_scheduler.services.scenario_loader import ScenarioLoader
 from etg_scheduler.services.validator import ScenarioValidator
 
@@ -76,3 +77,15 @@ def test_all_example_scenarios_are_valid_and_schedulable() -> None:
         assert validation.is_valid, validation.errors
         assert len(result.scheduled_tasks) == len(scenario.tasks)
         assert result.summary.total_execution_time > 0
+
+
+def test_genetic_scheduler_handles_water_power_plant_time_constraint() -> None:
+    loader = ScenarioLoader()
+    scenario = loader.load("scenarios/water_power_plant.json")
+    scheduler = GeneticScheduler(population_size=20, generations=30)
+
+    result = scheduler.schedule(scenario, scenario.time_constraint)
+
+    assert result.algorithm == "Genetic"
+    assert result.summary.total_execution_time <= scenario.time_constraint
+    assert result.summary.total_cost > 0

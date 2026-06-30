@@ -1,0 +1,293 @@
+{
+  "name": "Water power plant building process",
+  "description": "A simplified extended task graph for building a small hydroelectric power plant. The genetic scheduler searches for a low-cost assignment of tasks to resources while keeping the total project time under the time constraint.",
+  "default_optimization_mode": "MinimizeCost",
+  "time_constraint": 48.0,
+  "tasks": [
+    {
+      "id": "w1",
+      "name": "Prepare construction site",
+      "task_type": "CGT",
+      "duration": 5.0,
+      "dependencies": [],
+      "required_specializations": [],
+      "required_resource_count": 2,
+      "base_cost": 200.0,
+      "description": "Initial land cleaning and temporary access preparation."
+    },
+    {
+      "id": "w2",
+      "name": "Survey river bed",
+      "task_type": "DT",
+      "duration": 4.0,
+      "dependencies": [
+        "w1"
+      ],
+      "required_specializations": [
+        "SurveyEngineer"
+      ],
+      "required_resource_count": 1,
+      "base_cost": 150.0,
+      "description": "Engineering survey before foundation work."
+    },
+    {
+      "id": "w3",
+      "name": "Build temporary cofferdam",
+      "task_type": "CDT",
+      "duration": 7.0,
+      "dependencies": [
+        "w2"
+      ],
+      "required_specializations": [
+        "CivilEngineer",
+        "CraneOperator"
+      ],
+      "required_resource_count": 2,
+      "base_cost": 500.0,
+      "description": "Temporary river isolation for safe concrete work."
+    },
+    {
+      "id": "w4",
+      "name": "Pour concrete foundation",
+      "task_type": "CDT",
+      "duration": 8.0,
+      "dependencies": [
+        "w3"
+      ],
+      "required_specializations": [
+        "CivilEngineer",
+        "ConcreteTeam"
+      ],
+      "required_resource_count": 2,
+      "base_cost": 900.0,
+      "description": "Foundation and base channel construction."
+    },
+    {
+      "id": "w5",
+      "name": "Install water intake gate",
+      "task_type": "CDT",
+      "duration": 5.0,
+      "dependencies": [
+        "w4"
+      ],
+      "required_specializations": [
+        "MechanicalEngineer",
+        "CraneOperator"
+      ],
+      "required_resource_count": 2,
+      "base_cost": 450.0,
+      "description": "Installation of the intake gate and basic mechanical parts."
+    },
+    {
+      "id": "w6",
+      "name": "Install turbine",
+      "task_type": "CDT",
+      "duration": 6.0,
+      "dependencies": [
+        "w5"
+      ],
+      "required_specializations": [
+        "MechanicalEngineer",
+        "TurbineSpecialist"
+      ],
+      "required_resource_count": 2,
+      "base_cost": 800.0,
+      "description": "Mounting and mechanical alignment of the turbine."
+    },
+    {
+      "id": "w7",
+      "name": "Install generator",
+      "task_type": "CDT",
+      "duration": 5.0,
+      "dependencies": [
+        "w6"
+      ],
+      "required_specializations": [
+        "ElectricalEngineer",
+        "GeneratorSpecialist"
+      ],
+      "required_resource_count": 2,
+      "base_cost": 700.0,
+      "description": "Electrical generator placement and connection."
+    },
+    {
+      "id": "w8",
+      "name": "Build control room",
+      "task_type": "GT",
+      "duration": 4.0,
+      "dependencies": [
+        "w4"
+      ],
+      "required_specializations": [],
+      "required_resource_count": 1,
+      "base_cost": 300.0,
+      "description": "Small room for control panels and monitoring equipment."
+    },
+    {
+      "id": "w9",
+      "name": "Connect control system",
+      "task_type": "DT",
+      "duration": 4.0,
+      "dependencies": [
+        "w7",
+        "w8"
+      ],
+      "required_specializations": [
+        "AutomationEngineer"
+      ],
+      "required_resource_count": 1,
+      "base_cost": 350.0,
+      "description": "Automation and control system connection."
+    },
+    {
+      "id": "w10",
+      "name": "Safety inspection",
+      "task_type": "DT",
+      "duration": 3.0,
+      "dependencies": [
+        "w9"
+      ],
+      "required_specializations": [
+        "SafetyInspector"
+      ],
+      "required_resource_count": 1,
+      "base_cost": 180.0,
+      "description": "Formal safety inspection before startup."
+    },
+    {
+      "id": "w11",
+      "name": "Trial operation",
+      "task_type": "UT",
+      "duration": 3.0,
+      "dependencies": [
+        "w10"
+      ],
+      "required_specializations": [],
+      "required_resource_count": 1,
+      "base_cost": 120.0,
+      "description": "Short test run of the plant."
+    }
+  ],
+  "resources": [
+    {
+      "id": "civil_senior",
+      "name": "Senior civil engineer",
+      "resource_type": "Specialized",
+      "specialization": "CivilEngineer",
+      "cost_per_time_unit": 120.0,
+      "speed_multiplier": 1.15
+    },
+    {
+      "id": "civil_junior",
+      "name": "Junior civil engineer",
+      "resource_type": "Specialized",
+      "specialization": "CivilEngineer",
+      "cost_per_time_unit": 80.0,
+      "speed_multiplier": 0.9
+    },
+    {
+      "id": "survey_team",
+      "name": "Survey team",
+      "resource_type": "Specialized",
+      "specialization": "SurveyEngineer",
+      "cost_per_time_unit": 70.0,
+      "speed_multiplier": 1.0
+    },
+    {
+      "id": "crane_fast",
+      "name": "Fast crane operator",
+      "resource_type": "Specialized",
+      "specialization": "CraneOperator",
+      "cost_per_time_unit": 95.0,
+      "speed_multiplier": 1.2
+    },
+    {
+      "id": "crane_basic",
+      "name": "Basic crane operator",
+      "resource_type": "Specialized",
+      "specialization": "CraneOperator",
+      "cost_per_time_unit": 65.0,
+      "speed_multiplier": 0.9
+    },
+    {
+      "id": "concrete_team",
+      "name": "Concrete team",
+      "resource_type": "Specialized",
+      "specialization": "ConcreteTeam",
+      "cost_per_time_unit": 100.0,
+      "speed_multiplier": 1.0
+    },
+    {
+      "id": "mechanical_senior",
+      "name": "Senior mechanical engineer",
+      "resource_type": "Specialized",
+      "specialization": "MechanicalEngineer",
+      "cost_per_time_unit": 115.0,
+      "speed_multiplier": 1.1
+    },
+    {
+      "id": "mechanical_basic",
+      "name": "Basic mechanical engineer",
+      "resource_type": "Specialized",
+      "specialization": "MechanicalEngineer",
+      "cost_per_time_unit": 75.0,
+      "speed_multiplier": 0.9
+    },
+    {
+      "id": "turbine_team",
+      "name": "Turbine specialist team",
+      "resource_type": "Specialized",
+      "specialization": "TurbineSpecialist",
+      "cost_per_time_unit": 125.0,
+      "speed_multiplier": 1.15
+    },
+    {
+      "id": "electrical_engineer",
+      "name": "Electrical engineer",
+      "resource_type": "Specialized",
+      "specialization": "ElectricalEngineer",
+      "cost_per_time_unit": 95.0,
+      "speed_multiplier": 1.0
+    },
+    {
+      "id": "generator_team",
+      "name": "Generator specialist team",
+      "resource_type": "Specialized",
+      "specialization": "GeneratorSpecialist",
+      "cost_per_time_unit": 110.0,
+      "speed_multiplier": 1.05
+    },
+    {
+      "id": "automation_team",
+      "name": "Automation engineer",
+      "resource_type": "Specialized",
+      "specialization": "AutomationEngineer",
+      "cost_per_time_unit": 90.0,
+      "speed_multiplier": 1.0
+    },
+    {
+      "id": "safety_inspector",
+      "name": "Safety inspector",
+      "resource_type": "Specialized",
+      "specialization": "SafetyInspector",
+      "cost_per_time_unit": 85.0,
+      "speed_multiplier": 1.0
+    },
+    {
+      "id": "general_team_1",
+      "name": "General construction team 1",
+      "resource_type": "Universal",
+      "specialization": null,
+      "cost_per_time_unit": 55.0,
+      "speed_multiplier": 0.9
+    },
+    {
+      "id": "general_team_2",
+      "name": "General construction team 2",
+      "resource_type": "Universal",
+      "specialization": null,
+      "cost_per_time_unit": 50.0,
+      "speed_multiplier": 0.85
+    }
+  ]
+}

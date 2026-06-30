@@ -2,7 +2,9 @@
 
 ETG Scheduler is a Python console application for an academic Extended Task Graph scheduling project.
 
-The program loads a scenario from JSON, validates the task graph and resource constraints, creates a schedule with a greedy list scheduling algorithm, prints simple console output, and exports the result to JSON, CSV, and Markdown.
+The program loads a scenario from JSON, validates the task graph and resource constraints, creates a schedule, prints simple console output, and exports the result to JSON, CSV, and Markdown.
+
+The main project scenario is a water power plant building process. The program can also read other ETG scenarios from JSON files.
 
 ## Features
 
@@ -12,8 +14,10 @@ The program loads a scenario from JSON, validates the task graph and resource co
 - Resource cost and speed multiplier support
 - Validation of missing dependencies, cycles, task rules, and resource compatibility
 - Three optimization modes: `MinimizeTime`, `MinimizeCost`, `Balanced`
+- Greedy scheduler for simple comparison
+- Genetic scheduler for minimizing cost under a time constraint
 - Simple console interface with menus, lists, and timeline output
-- Example hospital, production line, and logistics warehouse scenarios
+- Example water power plant, hospital, production line, and logistics warehouse scenarios
 - Export to `output/` as JSON, CSV, and Markdown report
 - Tests for validation, scheduling, and example scenarios
 
@@ -85,6 +89,18 @@ python -m etg_scheduler --scenario scenarios/logistics_warehouse.json --mode Min
 python -m etg_scheduler --scenario scenarios/hospital.json --mode Balanced
 ```
 
+Run the water power plant scenario with the genetic algorithm:
+
+```bash
+python -m etg_scheduler --scenario scenarios/water_power_plant.json --algorithm genetic
+```
+
+The water power plant scenario has a default time constraint in the JSON file. You can also provide your own:
+
+```bash
+python -m etg_scheduler --scenario scenarios/water_power_plant.json --algorithm genetic --time-constraint 48
+```
+
 Show help:
 
 ```bash
@@ -119,6 +135,7 @@ etg-scheduler/
     services/
     utilities/
   scenarios/
+    water_power_plant.json
     hospital.json
     production_line.json
     logistics_warehouse.json
@@ -141,6 +158,7 @@ A scenario contains:
 - `name`
 - `description`
 - `default_optimization_mode`
+- `time_constraint`
 - `tasks`
 - `resources`
 
@@ -177,7 +195,7 @@ Each resource contains:
 
 `CGT` means Common General Task. It requires multiple resources of any type at the same time.
 
-## Algorithm
+## Algorithms
 
 The scheduler uses greedy list scheduling:
 
@@ -192,6 +210,17 @@ The scheduler uses greedy list scheduling:
 9. Repeat until every task is scheduled.
 
 The algorithm is intentionally explainable and practical for an academic console project. It is not intended to be a mathematically optimal solver.
+
+The genetic scheduler works differently:
+
+1. It creates many random resource assignments and task priorities.
+2. It builds a valid schedule from each candidate.
+3. It scores each candidate by total cost.
+4. If the candidate exceeds the time constraint, it receives a large penalty.
+5. It keeps better candidates, crosses them, mutates them, and repeats the process.
+6. The final result is the lowest-cost schedule found within the time constraint.
+
+This is an iterative improvement approach. It is simple, but it matches the project idea: optimize assignment of ETG tasks to resources while respecting execution constraints.
 
 ## Output
 

@@ -87,21 +87,33 @@ class ScheduleExporter:
             f"# ETG schedule report - {result.scenario_name}",
             "",
             f"Generated at: {result.created_at.isoformat(timespec='seconds')}",
+            f"Algorithm: {result.algorithm}",
             f"Mode: {result.optimization_mode.value}",
-            "",
-            "Scenario",
-            "",
-            result.scenario_description,
-            "",
-            "Summary",
-            "",
-            f"Total execution time: {format_number(result.summary.total_execution_time)}",
-            f"Total cost: {format_money(result.summary.total_cost)}",
-            f"Average resource utilization: {format_percent(result.summary.average_resource_utilization)}",
-            "",
-            "Schedule",
-            "",
         ]
+        if result.time_constraint is not None:
+            lines.append(f"Time constraint: {format_number(result.time_constraint)}")
+            if result.summary.total_execution_time <= result.time_constraint:
+                lines.append("Constraint status: OK")
+            else:
+                over = result.summary.total_execution_time - result.time_constraint
+                lines.append(f"Constraint status: over by {format_number(over)}")
+        lines.extend(
+            [
+                "",
+                "Scenario",
+                "",
+                result.scenario_description,
+                "",
+                "Summary",
+                "",
+                f"Total execution time: {format_number(result.summary.total_execution_time)}",
+                f"Total cost: {format_money(result.summary.total_cost)}",
+                f"Average resource utilization: {format_percent(result.summary.average_resource_utilization)}",
+                "",
+                "Schedule",
+                "",
+            ]
+        )
 
         for task in result.scheduled_tasks:
             lines.append(

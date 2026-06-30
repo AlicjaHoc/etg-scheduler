@@ -41,11 +41,21 @@ class ConsoleUI:
         selected = self._ask_number("Choose mode", 1, len(modes), default_index)
         return modes[selected - 1]
 
-    def show_scenario_summary(self, scenario: Scenario, path: Path, mode: OptimizationMode) -> None:
+    def show_scenario_summary(
+        self,
+        scenario: Scenario,
+        path: Path,
+        mode: OptimizationMode,
+        algorithm: str,
+        time_constraint: float | None,
+    ) -> None:
         self._section("Scenario")
         print(f"Name: {scenario.name}")
         print(f"File: {path}")
         print(f"Mode: {mode.value}")
+        print(f"Algorithm: {algorithm}")
+        if time_constraint is not None:
+            print(f"Time constraint: {format_number(time_constraint)}")
         print(f"Tasks: {len(scenario.tasks)}")
         print(f"Resources: {len(scenario.resources)}")
         print(scenario.description)
@@ -95,6 +105,14 @@ class ConsoleUI:
 
     def _show_summary(self, result: ScheduleResult) -> None:
         self._section("Summary")
+        print(f"Algorithm: {result.algorithm}")
+        if result.time_constraint is not None:
+            print(f"Time constraint: {format_number(result.time_constraint)}")
+            if result.summary.total_execution_time <= result.time_constraint:
+                print("Constraint status: OK")
+            else:
+                over = result.summary.total_execution_time - result.time_constraint
+                print(f"Constraint status: over by {format_number(over)}")
         print(f"Total time: {format_number(result.summary.total_execution_time)}")
         print(f"Total cost: {format_money(result.summary.total_cost)}")
         print(f"Average utilization: {format_percent(result.summary.average_resource_utilization)}")

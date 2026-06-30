@@ -184,5 +184,7 @@
       }
     ]
   },
-  "created_at": "2026-06-30T13:14:40"
+  "algorithm": "Greedy",
+  "time_constraint": null,
+  "created_at": "2026-06-30T13:32:34"
 }

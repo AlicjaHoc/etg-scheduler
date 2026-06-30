@@ -34,6 +34,7 @@ class ScenarioLoader:
             default_optimization_mode=OptimizationMode(
                 data.get("default_optimization_mode", OptimizationMode.BALANCED.value)
             ),
+            time_constraint=data.get("time_constraint"),
         )
 
     def _load_task(self, data: dict) -> Task:

@@ -1,6 +1,7 @@
 # ETG schedule report - Logistics warehouse shift
 
-Generated at: 2026-06-30T13:14:40
+Generated at: 2026-06-30T13:32:34
+Algorithm: Greedy
 Mode: MinimizeCost
 
 Scenario

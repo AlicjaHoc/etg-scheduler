@@ -1,0 +1,316 @@
+{
+  "scenario_name": "Water power plant building process",
+  "scenario_description": "A simplified extended task graph for building a small hydroelectric power plant. The genetic scheduler searches for a low-cost assignment of tasks to resources while keeping the total project time under the time constraint.",
+  "optimization_mode": "MinimizeCost",
+  "scheduled_tasks": [
+    {
+      "task_id": "w1",
+      "task_name": "Prepare construction site",
+      "task_type": "CGT",
+      "start_time": 0.0,
+      "finish_time": 4.761904761904762,
+      "duration": 4.761904761904762,
+      "assigned_resource_ids": [
+        "crane_fast",
+        "general_team_1"
+      ],
+      "assigned_resource_names": [
+        "Fast crane operator",
+        "General construction team 1"
+      ],
+      "cost": 914.2857142857143
+    },
+    {
+      "task_id": "w2",
+      "task_name": "Survey river bed",
+      "task_type": "DT",
+      "start_time": 4.761904761904762,
+      "finish_time": 8.761904761904763,
+      "duration": 4.0,
+      "assigned_resource_ids": [
+        "survey_team"
+      ],
+      "assigned_resource_names": [
+        "Survey team"
+      ],
+      "cost": 430.0
+    },
+    {
+      "task_id": "w3",
+      "task_name": "Build temporary cofferdam",
+      "task_type": "CDT",
+      "start_time": 8.761904761904763,
+      "finish_time": 14.719351570415402,
+      "duration": 5.957446808510639,
+      "assigned_resource_ids": [
+        "civil_senior",
+        "crane_fast"
+      ],
+      "assigned_resource_names": [
+        "Senior civil engineer",
+        "Fast crane operator"
+      ],
+      "cost": 1780.8510638297873
+    },
+    {
+      "task_id": "w4",
+      "task_name": "Pour concrete foundation",
+      "task_type": "CDT",
+      "start_time": 14.719351570415402,
+      "finish_time": 22.16121203553168,
+      "duration": 7.441860465116279,
+      "assigned_resource_ids": [
+        "civil_senior",
+        "concrete_team"
+      ],
+      "assigned_resource_names": [
+        "Senior civil engineer",
+        "Concrete team"
+      ],
+      "cost": 2537.209302325581
+    },
+    {
+      "task_id": "w5",
+      "task_name": "Install water intake gate",
+      "task_type": "CDT",
+      "start_time": 22.16121203553168,
+      "finish_time": 26.923116797436442,
+      "duration": 4.761904761904762,
+      "assigned_resource_ids": [
+        "mechanical_basic",
+        "crane_fast"
+      ],
+      "assigned_resource_names": [
+        "Basic mechanical engineer",
+        "Fast crane operator"
+      ],
+      "cost": 1259.5238095238096
+    },
+    {
+      "task_id": "w8",
+      "task_name": "Build control room",
+      "task_type": "GT",
+      "start_time": 22.16121203553168,
+      "finish_time": 26.867094388472857,
+      "duration": 4.705882352941177,
+      "assigned_resource_ids": [
+        "general_team_2"
+      ],
+      "assigned_resource_names": [
+        "General construction team 2"
+      ],
+      "cost": 535.2941176470588
+    },
+    {
+      "task_id": "w6",
+      "task_name": "Install turbine",
+      "task_type": "CDT",
+      "start_time": 26.923116797436442,
+      "finish_time": 32.776775334021806,
+      "duration": 5.853658536585367,
+      "assigned_resource_ids": [
+        "mechanical_basic",
+        "turbine_team"
+      ],
+      "assigned_resource_names": [
+        "Basic mechanical engineer",
+        "Turbine specialist team"
+      ],
+      "cost": 1970.7317073170734
+    },
+    {
+      "task_id": "w7",
+      "task_name": "Install generator",
+      "task_type": "CDT",
+      "start_time": 32.776775334021806,
+      "finish_time": 37.65482411450961,
+      "duration": 4.878048780487806,
+      "assigned_resource_ids": [
+        "electrical_engineer",
+        "generator_team"
+      ],
+      "assigned_resource_names": [
+        "Electrical engineer",
+        "Generator specialist team"
+      ],
+      "cost": 1700.0
+    },
+    {
+      "task_id": "w9",
+      "task_name": "Connect control system",
+      "task_type": "DT",
+      "start_time": 37.65482411450961,
+      "finish_time": 41.65482411450961,
+      "duration": 4.0,
+      "assigned_resource_ids": [
+        "automation_team"
+      ],
+      "assigned_resource_names": [
+        "Automation engineer"
+      ],
+      "cost": 710.0
+    },
+    {
+      "task_id": "w10",
+      "task_name": "Safety inspection",
+      "task_type": "DT",
+      "start_time": 41.65482411450961,
+      "finish_time": 44.65482411450961,
+      "duration": 3.0,
+      "assigned_resource_ids": [
+        "safety_inspector"
+      ],
+      "assigned_resource_names": [
+        "Safety inspector"
+      ],
+      "cost": 435.0
+    },
+    {
+      "task_id": "w11",
+      "task_name": "Trial operation",
+      "task_type": "UT",
+      "start_time": 44.65482411450961,
+      "finish_time": 47.988157447842944,
+      "duration": 3.333333333333333,
+      "assigned_resource_ids": [
+        "general_team_1"
+      ],
+      "assigned_resource_names": [
+        "General construction team 1"
+      ],
+      "cost": 303.3333333333333
+    }
+  ],
+  "summary": {
+    "scenario_name": "Water power plant building process",
+    "optimization_mode": "MinimizeCost",
+    "total_execution_time": 47.988157447842944,
+    "total_cost": 12576.229048262358,
+    "average_resource_utilization": 0.11995857381986245,
+    "resource_usage": [
+      {
+        "resource_id": "civil_senior",
+        "resource_name": "Senior civil engineer",
+        "busy_time": 13.399307273626917,
+        "idle_time": 34.58885017421603,
+        "utilization": 0.279221124257381,
+        "tasks_count": 2
+      },
+      {
+        "resource_id": "civil_junior",
+        "resource_name": "Junior civil engineer",
+        "busy_time": 0,
+        "idle_time": 47.988157447842944,
+        "utilization": 0.0,
+        "tasks_count": 0
+      },
+      {
+        "resource_id": "survey_team",
+        "resource_name": "Survey team",
+        "busy_time": 4.0,
+        "idle_time": 43.988157447842944,
+        "utilization": 0.0833538983935254,
+        "tasks_count": 1
+      },
+      {
+        "resource_id": "crane_fast",
+        "resource_name": "Fast crane operator",
+        "busy_time": 15.481256332320164,
+        "idle_time": 32.50690111552278,
+        "utilization": 0.3226057668320842,
+        "tasks_count": 3
+      },
+      {
+        "resource_id": "crane_basic",
+        "resource_name": "Basic crane operator",
+        "busy_time": 0,
+        "idle_time": 47.988157447842944,
+        "utilization": 0.0,
+        "tasks_count": 0
+      },
+      {
+        "resource_id": "concrete_team",
+        "resource_name": "Concrete team",
+        "busy_time": 7.441860465116279,
+        "idle_time": 40.546296982726666,
+        "utilization": 0.155077020267024,
+        "tasks_count": 1
+      },
+      {
+        "resource_id": "mechanical_senior",
+        "resource_name": "Senior mechanical engineer",
+        "busy_time": 0,
+        "idle_time": 47.988157447842944,
+        "utilization": 0.0,
+        "tasks_count": 0
+      },
+      {
+        "resource_id": "mechanical_basic",
+        "resource_name": "Basic mechanical engineer",
+        "busy_time": 10.615563298490128,
+        "idle_time": 37.372594149352814,
+        "utilization": 0.2212121461430959,
+        "tasks_count": 2
+      },
+      {
+        "resource_id": "turbine_team",
+        "resource_name": "Turbine specialist team",
+        "busy_time": 5.853658536585367,
+        "idle_time": 42.13449891125758,
+        "utilization": 0.12198131472223231,
+        "tasks_count": 1
+      },
+      {
+        "resource_id": "electrical_engineer",
+        "resource_name": "Electrical engineer",
+        "busy_time": 4.878048780487806,
+        "idle_time": 43.110108667355135,
+        "utilization": 0.10165109560186027,
+        "tasks_count": 1
+      },
+      {
+        "resource_id": "generator_team",
+        "resource_name": "Generator specialist team",
+        "busy_time": 4.878048780487806,
+        "idle_time": 43.110108667355135,
+        "utilization": 0.10165109560186027,
+        "tasks_count": 1
+      },
+      {
+        "resource_id": "automation_team",
+        "resource_name": "Automation engineer",
+        "busy_time": 4.0,
+        "idle_time": 43.988157447842944,
+        "utilization": 0.0833538983935254,
+        "tasks_count": 1
+      },
+      {
+        "resource_id": "safety_inspector",
+        "resource_name": "Safety inspector",
+        "busy_time": 3.0,
+        "idle_time": 44.988157447842944,
+        "utilization": 0.06251542379514405,
+        "tasks_count": 1
+      },
+      {
+        "resource_id": "general_team_1",
+        "resource_name": "General construction team 1",
+        "busy_time": 8.095238095238095,
+        "idle_time": 39.89291935260485,
+        "utilization": 0.16869241341546806,
+        "tasks_count": 2
+      },
+      {
+        "resource_id": "general_team_2",
+        "resource_name": "General construction team 2",
+        "busy_time": 4.705882352941177,
+        "idle_time": 43.28227509490177,
+        "utilization": 0.09806340987473577,
+        "tasks_count": 1
+      }
+    ]
+  },
+  "algorithm": "Genetic",
+  "time_constraint": 48.0,
+  "created_at": "2026-06-30T13:31:22"
+}

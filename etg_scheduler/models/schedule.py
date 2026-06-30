@@ -44,4 +44,6 @@ class ScheduleResult:
     optimization_mode: OptimizationMode
     scheduled_tasks: list[ScheduledTask]
     summary: ScheduleSummary
+    algorithm: str = "Greedy"
+    time_constraint: float | None = None
     created_at: datetime = field(default_factory=datetime.now)
