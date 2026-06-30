@@ -1,0 +1,581 @@
+ETG Scheduler - wyjasnienie projektu po ludzku
+=================================================
+
+Ten plik jest napisany jako prywatna notatka do zrozumienia projektu.
+Nie jest to formalny raport. Chodzi o to, zebys mogla spokojnie
+zrozumiec, co robi program, gdzie sa najwazniejsze pliki i jak opowiedziec
+o projekcie od poczatku do konca.
+
+
+1. O co chodzi w zadaniu
+------------------------
+
+Temat projektu dotyczy Extended Task Graph, czyli rozszerzonego grafu zadan.
+
+Zwykly graf zadan ma:
+- zadania jako wierzcholki,
+- zaleznosci jako krawedzie,
+- zasade, ze zadanie moze wystartowac dopiero po wykonaniu poprzednich zadan.
+
+Extended Task Graph dodaje do tego wiecej realizmu:
+- zadania maja rozne typy,
+- zasoby tez maja rozne typy,
+- nie kazdy zasob moze wykonac kazde zadanie,
+- niektore zadania wymagaja kilku zasobow naraz,
+- kazdy zasob ma koszt i szybkosc.
+
+W tresci zadania prowadzący wymaga konkretnie:
+- opisania procesu budowy elektrowni wodnej jako ETG,
+- optymalizacji przypisania zadan do zasobow,
+- uzycia podejscia genetycznego / iteracyjnego ulepszania,
+- minimalizacji kosztu przy okreslonym ograniczeniu czasu,
+- mozliwosci wczytania dowolnego ETG, a nie tylko jednego stalego zestawu zadan.
+
+Obecny projekt spelnia te zalozenia w prostej, studenckiej formie.
+
+
+2. Jak wyglada caly projekt
+---------------------------
+
+Najwazniejsze foldery:
+
+etg_scheduler/
+  Kod aplikacji.
+
+etg_scheduler/models/
+  Proste klasy danych: Task, Resource, Scenario, ScheduleResult itd.
+
+etg_scheduler/services/
+  Logika programu: wczytywanie scenariuszy, walidacja, dopasowanie zasobow,
+  harmonogram zachlanny, harmonogram genetyczny, eksport wynikow, konsola.
+
+scenarios/
+  Pliki JSON z przykladowymi grafami ETG.
+  Najwazniejszy dla zadania jest water_power_plant.json.
+
+output/
+  Przykladowe wygenerowane wyniki: JSON, CSV i raport Markdown.
+
+tests/
+  Testy sprawdzajace walidacje, harmonogramowanie i scenariusze.
+
+README.md
+  Glowne instrukcje po angielsku.
+
+README_FOR_STUDENT_PL.md
+  Dluzsze wyjasnienie po polsku.
+
+WYJASNIENIE_PROJEKTU_PL.txt
+  Ten plik - prywatne, proste wyjasnienie dla Ciebie.
+
+
+3. Jak uruchomic projekt
+------------------------
+
+W terminalu z katalogu glownego projektu:
+
+cd ~/etg-scheduler
+source .venv/bin/activate
+python -m etg_scheduler
+
+Jesli chcesz uruchomic konkretnie scenariusz elektrowni wodnej:
+
+python -m etg_scheduler --scenario scenarios/water_power_plant.json --algorithm genetic
+
+Mozna tez podac wlasne ograniczenie czasu:
+
+python -m etg_scheduler --scenario scenarios/water_power_plant.json --algorithm genetic --time-constraint 48
+
+Testy:
+
+python -m pytest
+
+
+4. Najwazniejszy scenariusz: elektrownia wodna
+----------------------------------------------
+
+Plik:
+
+scenarios/water_power_plant.json
+
+Ten plik opisuje proces budowy malej elektrowni wodnej.
+Jest to graf zadan. Kazde zadanie ma:
+- id,
+- nazwe,
+- typ ETG,
+- czas trwania,
+- zaleznosci,
+- wymagane specjalizacje,
+- liczbe potrzebnych zasobow,
+- koszt bazowy,
+- opis.
+
+Przykladowe zadania:
+- przygotowanie terenu,
+- pomiar koryta rzeki,
+- budowa tymczasowej grodzy,
+- wylanie fundamentu,
+- montaz bramy wlotowej,
+- montaz turbiny,
+- montaz generatora,
+- budowa sterowni,
+- podlaczenie sterowania,
+- kontrola bezpieczenstwa,
+- probne uruchomienie.
+
+Ten scenariusz ma tez pole:
+
+time_constraint: 48.0
+
+To znaczy, ze algorytm genetyczny ma znalezc harmonogram, ktory miesci sie
+w czasie 48 jednostek i ma jak najnizszy koszt.
+
+
+5. Typy zadan ETG w projekcie
+-----------------------------
+
+Typy sa zapisane w:
+
+etg_scheduler/models/enums.py
+
+Program obsluguje wszystkie wymagane typy:
+
+DT - Dedicated Task
+  Zadanie wymaga jednego zasobu specjalistycznego.
+  Przyklad: Survey river bed wymaga SurveyEngineer.
+
+GT - General Task
+  Zadanie wymaga jednego dowolnego zasobu.
+  Moze to byc zasob uniwersalny albo specjalistyczny.
+
+UT - Universal Task
+  Zadanie moze byc wykonane tylko przez zasob uniwersalny.
+  Przyklad: Trial operation.
+
+CDT - Common Dedicated Task
+  Zadanie wymaga kilku zasobow specjalistycznych jednoczesnie.
+  Przyklad: instalacja turbiny wymaga MechanicalEngineer i TurbineSpecialist.
+
+CGT - Common General Task
+  Zadanie wymaga kilku dowolnych zasobow jednoczesnie.
+  Przyklad: przygotowanie placu budowy przez dwie ekipy.
+
+
+6. Typy zasobow
+---------------
+
+Zasoby tez sa zapisane w pliku JSON scenariusza.
+Kazdy zasob ma:
+- id,
+- nazwe,
+- typ,
+- opcjonalna specjalizacje,
+- koszt za jednostke czasu,
+- mnoznik szybkosci.
+
+Sa dwa typy zasobow:
+
+Universal
+  Zasob uniwersalny. Jest bardziej elastyczny, zwykle tanszy albo wolniejszy.
+
+Specialized
+  Zasob specjalistyczny. Ma konkretna specjalizacje, np. CivilEngineer,
+  CraneOperator, MechanicalEngineer, TurbineSpecialist.
+
+
+7. Jak program wczytuje scenariusz
+----------------------------------
+
+Plik:
+
+etg_scheduler/services/scenario_loader.py
+
+Klasa ScenarioLoader:
+- znajduje pliki JSON w folderze scenarios,
+- wczytuje wybrany plik,
+- zamienia dane JSON na proste obiekty Pythona: Scenario, Task, Resource.
+
+Wazne: program nie zaklada jednego stalego zestawu zadan.
+Jesli dodasz nowy plik JSON w tym samym formacie, program moze go wczytac.
+
+To odpowiada wymaganiu:
+"program must be able to read any extended task graph".
+
+
+8. Jak dziala walidacja
+-----------------------
+
+Plik:
+
+etg_scheduler/services/validator.py
+
+Walidacja sprawdza, czy scenariusz ma sens zanim algorytm zacznie planowac.
+
+Program sprawdza:
+- czy scenariusz ma nazwe i opis,
+- czy sa jakies zadania i zasoby,
+- czy id zadan sa unikalne,
+- czy id zasobow sa unikalne,
+- czy zaleznosci wskazuja na istniejace zadania,
+- czy graf nie ma cyklu,
+- czy czasy i koszty nie sa niepoprawne,
+- czy typ zadania pasuje do liczby zasobow,
+- czy DT ma specjalizacje,
+- czy UT nie ma specjalizacji,
+- czy CDT i CGT wymagaja co najmniej dwoch zasobow,
+- czy kazde zadanie ma przynajmniej jedno mozliwe dopasowanie zasobow.
+
+Wykrywanie cyklu jest napisane recznie, przez proste przejscie grafu.
+Nie ma tu duzej biblioteki grafowej, zeby projekt byl prostszy.
+
+
+9. Jak program dopasowuje zasoby
+--------------------------------
+
+Plik:
+
+etg_scheduler/services/resource_matcher.py
+
+ResourceMatcher generuje mozliwe przypisania zasobow dla zadania.
+
+Przyklad:
+- jesli zadanie to DT i wymaga CivilEngineer, matcher znajdzie zasoby
+  specjalistyczne o specjalizacji CivilEngineer.
+
+- jesli zadanie to CDT i wymaga CivilEngineer + CraneOperator, matcher
+  szuka par zasobow: jeden CivilEngineer i jeden CraneOperator.
+
+- jesli zadanie to CGT i wymaga dwoch zasobow dowolnego typu, matcher
+  tworzy kombinacje dwoch zasobow.
+
+To jest bardzo wazna czesc, bo algorytm genetyczny nie wymysla losowych
+niepoprawnych zasobow. On wybiera tylko z listy poprawnych przypisan.
+
+
+10. Harmonogram zachlanny
+-------------------------
+
+Plik:
+
+etg_scheduler/services/greedy_scheduler.py
+
+Ten algorytm jest prostszy i sluzy jako porownanie.
+
+Dziala tak:
+1. Na poczatku wszystkie zasoby sa wolne od czasu 0.
+2. Program znajduje zadania gotowe, czyli takie, ktorych zaleznosci sa juz zakonczone.
+3. Dla gotowych zadan generuje mozliwe przypisania zasobow.
+4. Liczy start, koniec i koszt kazdego kandydata.
+5. Wybiera najlepszego kandydata wedlug trybu:
+   - MinimizeTime,
+   - MinimizeCost,
+   - Balanced.
+6. Dodaje zadanie do harmonogramu.
+7. Aktualizuje czas dostepnosci zasobow.
+8. Powtarza az zaplanuje wszystkie zadania.
+
+To nie jest glowny algorytm z wymagania, ale jest przydatny jako prosty
+wariant i porownanie.
+
+
+11. Algorytm genetyczny
+-----------------------
+
+Plik:
+
+etg_scheduler/services/genetic_scheduler.py
+
+To jest najwazniejsza czesc wzgledem wymagan prowadzacego.
+
+Algorytm genetyczny ma znalezc tani harmonogram, ale taki, ktory miesci sie
+w limicie czasu.
+
+W projekcie chromosom sklada sie z dwoch rzeczy:
+
+choices
+  Dla kazdego zadania informacja, ktore poprawne przypisanie zasobow wybrac.
+
+priorities
+  Dla kazdego zadania liczba okreslajaca priorytet. Gdy kilka zadan jest
+  gotowych jednoczesnie, program wybiera to z najlepszym priorytetem.
+
+Dlaczego to ma sens?
+Bo harmonogram zalezy od dwoch decyzji:
+- jakie zasoby przypisac do kazdego zadania,
+- w jakiej kolejnosci wykonywac zadania, gdy jest kilka mozliwych.
+
+
+12. Kroki algorytmu genetycznego
+--------------------------------
+
+1. Program generuje populacje losowych chromosomow.
+
+2. Dla kazdego chromosomu buduje poprawny harmonogram.
+   Poprawnosc zaleznosci jest zachowana, bo program wybiera tylko zadania gotowe.
+
+3. Program liczy koszt i czas harmonogramu.
+
+4. Funkcja oceny:
+
+   score = koszt + kara za przekroczenie czasu
+
+   Jesli harmonogram miesci sie w limicie czasu, wynik to prawie sam koszt.
+   Jesli przekracza limit, dostaje bardzo duza kare:
+
+   overtime * 100000
+
+   Dzieki temu algorytm preferuje tanie rozwiazania, ale nie ignoruje
+   ograniczenia czasu.
+
+5. Program sortuje populacje od najlepszej do najgorszej.
+
+6. Kilka najlepszych rozwiazan przechodzi dalej bez zmian.
+   To jest prosta elita.
+
+7. Nowe rozwiazania powstaja przez crossover.
+   Dziecko bierze czesc decyzji od jednego rodzica i czesc od drugiego.
+
+8. Potem jest mutacja.
+   Czasami program losowo zmienia wybor zasobu albo priorytet zadania.
+
+9. Proces powtarza sie przez wiele generacji.
+
+10. Na koncu program zwraca najlepszy znaleziony harmonogram.
+
+
+13. Czy to jest "genetic programming"?
+--------------------------------------
+
+W bardzo scislym znaczeniu "genetic programming" czesto oznacza ewolucje
+programow albo drzew wyrazen. Tutaj zaimplementowane jest proste podejscie
+genetyczne / ewolucyjne do harmonogramowania:
+- populacja,
+- selekcja,
+- crossover,
+- mutacja,
+- iteracyjne ulepszanie.
+
+Dla projektu studenckiego i tresci "iterative improvement genetic programming
+approach" to jest praktyczna i zrozumiala interpretacja.
+
+Mozesz powiedziec:
+"W projekcie zastosowano prosty algorytm genetyczny jako metode iteracyjnego
+ulepszania przypisan zadan do zasobow. Chromosom opisuje wybor zasobow i
+priorytety zadan."
+
+
+14. Jak liczony jest czas zadania
+---------------------------------
+
+Dla zadania z jednym zasobem:
+
+czas rzeczywisty = czas bazowy / speed_multiplier
+
+Dla kilku zasobow:
+
+czas rzeczywisty = czas bazowy / srednia szybkosc zasobow
+
+Przyklad:
+Jesli zadanie trwa 6, a srednia szybkosc zasobow to 1.2, to:
+
+6 / 1.2 = 5
+
+Zadanie trwa krocej, bo zasoby sa szybsze.
+
+
+15. Jak liczony jest koszt zadania
+----------------------------------
+
+Koszt zadania:
+
+koszt = czas rzeczywisty * suma kosztow zasobow + koszt bazowy zadania
+
+Przy zadaniach CDT i CGT kilka zasobow pracuje jednoczesnie, wiec sumuja sie
+koszty wszystkich przypisanych zasobow.
+
+
+16. Jak dziala ograniczenie czasu
+---------------------------------
+
+W scenariuszu elektrowni wodnej jest:
+
+time_constraint = 48
+
+To oznacza, ze caly harmonogram powinien zakonczyc sie w czasie 48.
+
+Algorytm genetyczny nie odrzuca od razu harmonogramow za dlugich, ale daje im
+duza kare. To pomaga przeszukiwac rozwiazania, ale koncowo preferuje takie,
+ktore mieszcza sie w czasie.
+
+W wygenerowanym wyniku dla elektrowni wodnej:
+
+Total time: 47.99
+Time constraint: 48
+Constraint status: OK
+
+Czyli znaleziony harmonogram spelnia ograniczenie.
+
+
+17. Co jest eksportowane
+------------------------
+
+Plik:
+
+etg_scheduler/services/exporter.py
+
+Po kazdym uruchomieniu program zapisuje trzy pliki do output:
+
+JSON
+  Pelny wynik z harmonogramem, kosztami, czasami i wykorzystaniem zasobow.
+
+CSV
+  Prosta tabela z zadaniami, czasami, zasobami i kosztami.
+
+Markdown report
+  Czytelny raport tekstowy.
+
+Nazwy plikow maja nazwe scenariusza i znacznik czasu.
+
+
+18. Co pokazuje konsola
+-----------------------
+
+Plik:
+
+etg_scheduler/services/console_ui.py
+
+Konsola pokazuje:
+- wybrany scenariusz,
+- tryb,
+- algorytm,
+- limit czasu,
+- liste zadan,
+- liste zasobow,
+- wynik walidacji,
+- harmonogram,
+- podsumowanie kosztu i czasu,
+- wykorzystanie zasobow,
+- timeline zasobow,
+- sciezki do plikow wynikowych.
+
+Celowo jest to proste, bez ladnych tabel i ozdobnikow, zeby wygladalo jak
+normalna aplikacja konsolowa do projektu.
+
+
+19. Jak odpowiadac, jesli ktos zapyta "czy program czyta dowolny ETG?"
+-----------------------------------------------------------------------
+
+Mozesz powiedziec:
+
+"Tak, program nie ma na stale wpisanej elektrowni wodnej. Scenariusz jest
+wczytywany z pliku JSON. Wystarczy dodac inny plik w folderze scenarios z
+lista zadan, zasobow i zaleznosci. Program uzyje tego samego walidatora,
+matcherow zasobow i algorytmow harmonogramowania."
+
+Trzeba tylko zachowac ten sam format pol:
+- tasks,
+- resources,
+- dependencies,
+- task_type,
+- required_specializations,
+- required_resource_count.
+
+
+20. Jak wytlumaczyc projekt na prezentacji
+------------------------------------------
+
+Prosty plan wypowiedzi:
+
+1. Projekt dotyczy Extended Task Graph.
+2. ETG rozszerza zwykly graf zadan o typy zadan i ograniczenia zasobow.
+3. Glowny scenariusz to budowa elektrowni wodnej.
+4. Zadania sa zapisane w JSON, wiec program nie jest ograniczony do jednego
+   grafu.
+5. Program najpierw waliduje graf: zaleznosci, cykle, typy zadan i zasoby.
+6. Potem generuje mozliwe przypisania zasobow do kazdego zadania.
+7. Glowny algorytm to algorytm genetyczny.
+8. Chromosom opisuje wybor zasobow oraz priorytety zadan.
+9. Program tworzy populacje, ocenia koszt, robi selekcje, crossover i mutacje.
+10. Celem jest minimalizacja kosztu przy ograniczeniu czasu.
+11. Wynik pokazuje harmonogram, koszt, czas i wykorzystanie zasobow.
+
+
+21. Czy wszystkie wymagania sa teraz pokryte?
+---------------------------------------------
+
+Tak, najwazniejsze wymagania sa pokryte:
+
+- ETG jako graf zadan i zaleznosci: tak.
+- Rozne typy zadan ETG: tak.
+- Zasoby uniwersalne i specjalistyczne: tak.
+- Czas i koszt: tak.
+- Scenariusz budowy elektrowni wodnej: tak.
+- Optymalizacja przypisania zadan do zasobow: tak.
+- Podejscie genetyczne / iteracyjne ulepszanie: tak.
+- Minimalizacja kosztu przy ograniczeniu czasu: tak.
+- Wczytywanie dowolnego ETG z pliku JSON: tak.
+- Eksport wynikow: tak.
+- Testy: tak.
+
+Jedyna rzecz, ktora warto rozumiec uczciwie:
+algorytm genetyczny nie gwarantuje matematycznie najlepszego globalnego wyniku.
+To normalne dla prostych algorytmow genetycznych. On szuka dobrego rozwiazania
+przez iteracyjne ulepszanie.
+
+
+22. Najwazniejsze komendy
+-------------------------
+
+Uruchomienie menu:
+
+python -m etg_scheduler
+
+Glowny scenariusz projektu:
+
+python -m etg_scheduler --scenario scenarios/water_power_plant.json --algorithm genetic
+
+Z innym limitem czasu:
+
+python -m etg_scheduler --scenario scenarios/water_power_plant.json --algorithm genetic --time-constraint 48
+
+Testy:
+
+python -m pytest
+
+
+23. Najwazniejsze pliki do obejrzenia przed oddaniem
+----------------------------------------------------
+
+scenarios/water_power_plant.json
+  Dane projektu: zadania, zasoby, limit czasu.
+
+etg_scheduler/services/genetic_scheduler.py
+  Glowny algorytm genetyczny.
+
+etg_scheduler/services/resource_matcher.py
+  Dopasowanie zasobow do typow zadan ETG.
+
+etg_scheduler/services/validator.py
+  Sprawdzanie poprawnosci scenariusza.
+
+etg_scheduler/services/greedy_scheduler.py
+  Prosty algorytm porownawczy.
+
+etg_scheduler/app.py
+  Wejscie aplikacji i argumenty terminala.
+
+output/water_power_plant_building_process_..._report.md
+  Przykladowy wynik dla elektrowni wodnej.
+
+
+24. Krotka wersja do zapamietania
+---------------------------------
+
+Program wczytuje graf ETG z JSON. Kazde zadanie ma typ, czas, koszt i
+zaleznosci. Zasoby maja typ, specjalizacje, koszt i szybkosc. Program sprawdza
+poprawnosc grafu, generuje mozliwe przypisania zasobow, a potem algorytm
+genetyczny szuka taniego harmonogramu, ktory miesci sie w limicie czasu.
+
+Wynik pokazuje, kiedy zaczyna i konczy sie kazde zadanie, jakie zasoby zostaly
+przypisane, jaki jest koszt calkowity i czy harmonogram spelnia ograniczenie
+czasu.
