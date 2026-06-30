@@ -1,0 +1,182 @@
+{
+  "scenario_name": "Production line assembly",
+  "scenario_description": "A compact manufacturing workflow for checking material, cutting parts, assembly, quality control, packaging, and storage.",
+  "optimization_mode": "MinimizeTime",
+  "created_at": "2026-06-30T12:50:25.508508",
+  "scheduled_tasks": [
+    {
+      "task_id": "p1",
+      "task_name": "Material check",
+      "task_type": "GT",
+      "start_time": 0.0,
+      "finish_time": 1.111111111111111,
+      "duration": 1.111111111111111,
+      "assigned_resource_ids": [
+        "robot_arm_1"
+      ],
+      "assigned_resource_names": [
+        "Robot arm"
+      ],
+      "cost": 88.33333333333331
+    },
+    {
+      "task_id": "p2",
+      "task_name": "Cut components",
+      "task_type": "DT",
+      "start_time": 1.111111111111111,
+      "finish_time": 3.6111111111111107,
+      "duration": 2.5,
+      "assigned_resource_ids": [
+        "machine_a_1"
+      ],
+      "assigned_resource_names": [
+        "Machine A"
+      ],
+      "cost": 190.0
+    },
+    {
+      "task_id": "p3",
+      "task_name": "Automated assembly",
+      "task_type": "CDT",
+      "start_time": 3.6111111111111107,
+      "finish_time": 7.0153664302600465,
+      "duration": 3.404255319148936,
+      "assigned_resource_ids": [
+        "robot_arm_1",
+        "technician_1"
+      ],
+      "assigned_resource_names": [
+        "Robot arm",
+        "Machine technician"
+      ],
+      "cost": 515.531914893617
+    },
+    {
+      "task_id": "p4",
+      "task_name": "Manual adjustment",
+      "task_type": "GT",
+      "start_time": 7.0153664302600465,
+      "finish_time": 8.496847911741527,
+      "duration": 1.4814814814814814,
+      "assigned_resource_ids": [
+        "robot_arm_1"
+      ],
+      "assigned_resource_names": [
+        "Robot arm"
+      ],
+      "cost": 121.1111111111111
+    },
+    {
+      "task_id": "p5",
+      "task_name": "Quality control",
+      "task_type": "DT",
+      "start_time": 8.496847911741527,
+      "finish_time": 10.996847911741527,
+      "duration": 2.5,
+      "assigned_resource_ids": [
+        "quality_1"
+      ],
+      "assigned_resource_names": [
+        "Quality inspector"
+      ],
+      "cost": 137.5
+    },
+    {
+      "task_id": "p6",
+      "task_name": "Packaging",
+      "task_type": "CGT",
+      "start_time": 10.996847911741527,
+      "finish_time": 12.56547536272192,
+      "duration": 1.5686274509803924,
+      "assigned_resource_ids": [
+        "machine_a_1",
+        "robot_arm_1"
+      ],
+      "assigned_resource_names": [
+        "Machine A",
+        "Robot arm"
+      ],
+      "cost": 221.76470588235296
+    },
+    {
+      "task_id": "p7",
+      "task_name": "Move to storage",
+      "task_type": "DT",
+      "start_time": 12.56547536272192,
+      "finish_time": 14.06547536272192,
+      "duration": 1.5,
+      "assigned_resource_ids": [
+        "forklift_operator_1"
+      ],
+      "assigned_resource_names": [
+        "Forklift operator"
+      ],
+      "cost": 75.0
+    }
+  ],
+  "summary": {
+    "scenario_name": "Production line assembly",
+    "optimization_mode": "MinimizeTime",
+    "total_execution_time": 14.06547536272192,
+    "total_cost": 1349.2410652204144,
+    "average_resource_utilization": 0.19336463058749093,
+    "resource_usage": [
+      {
+        "resource_id": "machine_a_1",
+        "resource_name": "Machine A",
+        "busy_time": 4.068627450980392,
+        "idle_time": 9.996847911741527,
+        "utilization": 0.2892634159925783,
+        "tasks_count": 2
+      },
+      {
+        "resource_id": "robot_arm_1",
+        "resource_name": "Robot arm",
+        "busy_time": 7.565475362721921,
+        "idle_time": 6.499999999999998,
+        "utilization": 0.5378755546913749,
+        "tasks_count": 4
+      },
+      {
+        "resource_id": "technician_1",
+        "resource_name": "Machine technician",
+        "busy_time": 3.404255319148936,
+        "idle_time": 10.661220043572984,
+        "utilization": 0.24202916939240596,
+        "tasks_count": 1
+      },
+      {
+        "resource_id": "quality_1",
+        "resource_name": "Quality inspector",
+        "busy_time": 2.5,
+        "idle_time": 11.56547536272192,
+        "utilization": 0.17774017127254813,
+        "tasks_count": 1
+      },
+      {
+        "resource_id": "forklift_operator_1",
+        "resource_name": "Forklift operator",
+        "busy_time": 1.5,
+        "idle_time": 12.56547536272192,
+        "utilization": 0.10664410276352888,
+        "tasks_count": 1
+      },
+      {
+        "resource_id": "worker_1",
+        "resource_name": "Universal worker 1",
+        "busy_time": 0.0,
+        "idle_time": 14.06547536272192,
+        "utilization": 0.0,
+        "tasks_count": 0
+      },
+      {
+        "resource_id": "worker_2",
+        "resource_name": "Universal worker 2",
+        "busy_time": 0.0,
+        "idle_time": 14.06547536272192,
+        "utilization": 0.0,
+        "tasks_count": 0
+      }
+    ]
+  }
+}

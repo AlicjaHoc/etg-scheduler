@@ -1,0 +1,163 @@
+{
+  "name": "Production line assembly",
+  "description": "A compact manufacturing workflow for checking material, cutting parts, assembly, quality control, packaging, and storage.",
+  "default_optimization_mode": "MinimizeTime",
+  "tasks": [
+    {
+      "id": "p1",
+      "name": "Material check",
+      "task_type": "GT",
+      "duration": 1.5,
+      "dependencies": [],
+      "required_specializations": [],
+      "required_resource_count": 1,
+      "base_cost": 5.0,
+      "description": "Check incoming material before production."
+    },
+    {
+      "id": "p2",
+      "name": "Cut components",
+      "task_type": "DT",
+      "duration": 3.0,
+      "dependencies": [
+        "p1"
+      ],
+      "required_specializations": [
+        "MachineA"
+      ],
+      "required_resource_count": 1,
+      "base_cost": 40.0,
+      "description": "Cut base components using a dedicated machine."
+    },
+    {
+      "id": "p3",
+      "name": "Automated assembly",
+      "task_type": "CDT",
+      "duration": 4.0,
+      "dependencies": [
+        "p2"
+      ],
+      "required_specializations": [
+        "RobotArm",
+        "MachineTechnician"
+      ],
+      "required_resource_count": 2,
+      "base_cost": 90.0,
+      "description": "Assembly using a robot arm and technician supervision."
+    },
+    {
+      "id": "p4",
+      "name": "Manual adjustment",
+      "task_type": "GT",
+      "duration": 2.0,
+      "dependencies": [
+        "p3"
+      ],
+      "required_specializations": [],
+      "required_resource_count": 1,
+      "base_cost": 10.0,
+      "description": "Small manual correction before quality control."
+    },
+    {
+      "id": "p5",
+      "name": "Quality control",
+      "task_type": "DT",
+      "duration": 2.5,
+      "dependencies": [
+        "p4"
+      ],
+      "required_specializations": [
+        "QualityInspector"
+      ],
+      "required_resource_count": 1,
+      "base_cost": 25.0,
+      "description": "Inspection of assembled product."
+    },
+    {
+      "id": "p6",
+      "name": "Packaging",
+      "task_type": "CGT",
+      "duration": 2.0,
+      "dependencies": [
+        "p5"
+      ],
+      "required_specializations": [],
+      "required_resource_count": 2,
+      "base_cost": 10.0,
+      "description": "Package the finished product using two available resources."
+    },
+    {
+      "id": "p7",
+      "name": "Move to storage",
+      "task_type": "DT",
+      "duration": 1.5,
+      "dependencies": [
+        "p6"
+      ],
+      "required_specializations": [
+        "ForkliftOperator"
+      ],
+      "required_resource_count": 1,
+      "base_cost": 15.0,
+      "description": "Transport finished packages to storage."
+    }
+  ],
+  "resources": [
+    {
+      "id": "machine_a_1",
+      "name": "Machine A",
+      "resource_type": "Specialized",
+      "specialization": "MachineA",
+      "cost_per_time_unit": 60.0,
+      "speed_multiplier": 1.2
+    },
+    {
+      "id": "robot_arm_1",
+      "name": "Robot arm",
+      "resource_type": "Specialized",
+      "specialization": "RobotArm",
+      "cost_per_time_unit": 75.0,
+      "speed_multiplier": 1.35
+    },
+    {
+      "id": "technician_1",
+      "name": "Machine technician",
+      "resource_type": "Specialized",
+      "specialization": "MachineTechnician",
+      "cost_per_time_unit": 50.0,
+      "speed_multiplier": 1.0
+    },
+    {
+      "id": "quality_1",
+      "name": "Quality inspector",
+      "resource_type": "Specialized",
+      "specialization": "QualityInspector",
+      "cost_per_time_unit": 45.0,
+      "speed_multiplier": 1.0
+    },
+    {
+      "id": "forklift_operator_1",
+      "name": "Forklift operator",
+      "resource_type": "Specialized",
+      "specialization": "ForkliftOperator",
+      "cost_per_time_unit": 40.0,
+      "speed_multiplier": 1.0
+    },
+    {
+      "id": "worker_1",
+      "name": "Universal worker 1",
+      "resource_type": "Universal",
+      "specialization": null,
+      "cost_per_time_unit": 25.0,
+      "speed_multiplier": 0.95
+    },
+    {
+      "id": "worker_2",
+      "name": "Universal worker 2",
+      "resource_type": "Universal",
+      "specialization": null,
+      "cost_per_time_unit": 24.0,
+      "speed_multiplier": 0.9
+    }
+  ]
+}

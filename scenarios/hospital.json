@@ -1,0 +1,166 @@
+{
+  "name": "Hospital treatment workflow",
+  "description": "A small hospital process from registration through examination, laboratory work, surgery, recovery, and discharge.",
+  "default_optimization_mode": "Balanced",
+  "tasks": [
+    {
+      "id": "h1",
+      "name": "Patient registration",
+      "task_type": "GT",
+      "duration": 1.0,
+      "dependencies": [],
+      "required_specializations": [],
+      "required_resource_count": 1,
+      "base_cost": 5.0,
+      "description": "Initial patient registration at the desk."
+    },
+    {
+      "id": "h2",
+      "name": "Initial examination",
+      "task_type": "DT",
+      "duration": 2.0,
+      "dependencies": [
+        "h1"
+      ],
+      "required_specializations": [
+        "Doctor"
+      ],
+      "required_resource_count": 1,
+      "base_cost": 20.0,
+      "description": "Medical examination by a doctor."
+    },
+    {
+      "id": "h3",
+      "name": "Blood analysis",
+      "task_type": "DT",
+      "duration": 3.0,
+      "dependencies": [
+        "h2"
+      ],
+      "required_specializations": [
+        "LabTechnician"
+      ],
+      "required_resource_count": 1,
+      "base_cost": 30.0,
+      "description": "Laboratory analysis of patient samples."
+    },
+    {
+      "id": "h4",
+      "name": "Surgery preparation",
+      "task_type": "CDT",
+      "duration": 1.5,
+      "dependencies": [
+        "h2"
+      ],
+      "required_specializations": [
+        "Nurse",
+        "OperatingRoom"
+      ],
+      "required_resource_count": 2,
+      "base_cost": 50.0,
+      "description": "Preparing the room and patient for surgery."
+    },
+    {
+      "id": "h5",
+      "name": "Surgery",
+      "task_type": "CDT",
+      "duration": 4.0,
+      "dependencies": [
+        "h3",
+        "h4"
+      ],
+      "required_specializations": [
+        "Surgeon",
+        "Nurse",
+        "OperatingRoom"
+      ],
+      "required_resource_count": 3,
+      "base_cost": 200.0,
+      "description": "Main surgical operation."
+    },
+    {
+      "id": "h6",
+      "name": "Recovery monitoring",
+      "task_type": "UT",
+      "duration": 3.0,
+      "dependencies": [
+        "h5"
+      ],
+      "required_specializations": [],
+      "required_resource_count": 1,
+      "base_cost": 10.0,
+      "description": "Universal staff monitor the patient after surgery."
+    },
+    {
+      "id": "h7",
+      "name": "Discharge documents",
+      "task_type": "GT",
+      "duration": 1.0,
+      "dependencies": [
+        "h6"
+      ],
+      "required_specializations": [],
+      "required_resource_count": 1,
+      "base_cost": 5.0,
+      "description": "Final paperwork and discharge instructions."
+    }
+  ],
+  "resources": [
+    {
+      "id": "surgeon_anna",
+      "name": "Dr Anna Nowak",
+      "resource_type": "Specialized",
+      "specialization": "Surgeon",
+      "cost_per_time_unit": 95.0,
+      "speed_multiplier": 1.1
+    },
+    {
+      "id": "doctor_ewa",
+      "name": "Dr Ewa Zielinska",
+      "resource_type": "Specialized",
+      "specialization": "Doctor",
+      "cost_per_time_unit": 70.0,
+      "speed_multiplier": 1.0
+    },
+    {
+      "id": "nurse_marek",
+      "name": "Nurse Marek",
+      "resource_type": "Specialized",
+      "specialization": "Nurse",
+      "cost_per_time_unit": 45.0,
+      "speed_multiplier": 1.0
+    },
+    {
+      "id": "lab_tech_1",
+      "name": "Laboratory technician",
+      "resource_type": "Specialized",
+      "specialization": "LabTechnician",
+      "cost_per_time_unit": 40.0,
+      "speed_multiplier": 1.0
+    },
+    {
+      "id": "operating_room_1",
+      "name": "Operating room 1",
+      "resource_type": "Specialized",
+      "specialization": "OperatingRoom",
+      "cost_per_time_unit": 120.0,
+      "speed_multiplier": 1.0
+    },
+    {
+      "id": "assistant_1",
+      "name": "Universal assistant 1",
+      "resource_type": "Universal",
+      "specialization": null,
+      "cost_per_time_unit": 30.0,
+      "speed_multiplier": 0.9
+    },
+    {
+      "id": "assistant_2",
+      "name": "Universal assistant 2",
+      "resource_type": "Universal",
+      "specialization": null,
+      "cost_per_time_unit": 28.0,
+      "speed_multiplier": 0.85
+    }
+  ]
+}

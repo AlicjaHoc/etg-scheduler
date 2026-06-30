@@ -1,0 +1,184 @@
+{
+  "scenario_name": "Hospital treatment workflow",
+  "scenario_description": "A small hospital process from registration through examination, laboratory work, surgery, recovery, and discharge.",
+  "optimization_mode": "Balanced",
+  "created_at": "2026-06-30T12:50:15.063927",
+  "scheduled_tasks": [
+    {
+      "task_id": "h1",
+      "task_name": "Patient registration",
+      "task_type": "GT",
+      "start_time": 0.0,
+      "finish_time": 1.0,
+      "duration": 1.0,
+      "assigned_resource_ids": [
+        "lab_tech_1"
+      ],
+      "assigned_resource_names": [
+        "Laboratory technician"
+      ],
+      "cost": 45.0
+    },
+    {
+      "task_id": "h2",
+      "task_name": "Initial examination",
+      "task_type": "DT",
+      "start_time": 1.0,
+      "finish_time": 3.0,
+      "duration": 2.0,
+      "assigned_resource_ids": [
+        "doctor_ewa"
+      ],
+      "assigned_resource_names": [
+        "Dr Ewa Zielinska"
+      ],
+      "cost": 160.0
+    },
+    {
+      "task_id": "h3",
+      "task_name": "Blood analysis",
+      "task_type": "DT",
+      "start_time": 3.0,
+      "finish_time": 6.0,
+      "duration": 3.0,
+      "assigned_resource_ids": [
+        "lab_tech_1"
+      ],
+      "assigned_resource_names": [
+        "Laboratory technician"
+      ],
+      "cost": 150.0
+    },
+    {
+      "task_id": "h4",
+      "task_name": "Surgery preparation",
+      "task_type": "CDT",
+      "start_time": 3.0,
+      "finish_time": 4.5,
+      "duration": 1.5,
+      "assigned_resource_ids": [
+        "nurse_marek",
+        "operating_room_1"
+      ],
+      "assigned_resource_names": [
+        "Nurse Marek",
+        "Operating room 1"
+      ],
+      "cost": 297.5
+    },
+    {
+      "task_id": "h5",
+      "task_name": "Surgery",
+      "task_type": "CDT",
+      "start_time": 6.0,
+      "finish_time": 9.870967741935484,
+      "duration": 3.8709677419354835,
+      "assigned_resource_ids": [
+        "surgeon_anna",
+        "nurse_marek",
+        "operating_room_1"
+      ],
+      "assigned_resource_names": [
+        "Dr Anna Nowak",
+        "Nurse Marek",
+        "Operating room 1"
+      ],
+      "cost": 1206.4516129032259
+    },
+    {
+      "task_id": "h6",
+      "task_name": "Recovery monitoring",
+      "task_type": "UT",
+      "start_time": 9.870967741935484,
+      "finish_time": 13.204301075268816,
+      "duration": 3.333333333333333,
+      "assigned_resource_ids": [
+        "assistant_1"
+      ],
+      "assigned_resource_names": [
+        "Universal assistant 1"
+      ],
+      "cost": 109.99999999999999
+    },
+    {
+      "task_id": "h7",
+      "task_name": "Discharge documents",
+      "task_type": "GT",
+      "start_time": 13.204301075268816,
+      "finish_time": 14.315412186379927,
+      "duration": 1.1111111111111112,
+      "assigned_resource_ids": [
+        "assistant_1"
+      ],
+      "assigned_resource_names": [
+        "Universal assistant 1"
+      ],
+      "cost": 38.333333333333336
+    }
+  ],
+  "summary": {
+    "scenario_name": "Hospital treatment workflow",
+    "optimization_mode": "Balanced",
+    "total_execution_time": 14.315412186379927,
+    "total_cost": 2007.284946236559,
+    "average_resource_utilization": 0.25005365190643114,
+    "resource_usage": [
+      {
+        "resource_id": "surgeon_anna",
+        "resource_name": "Dr Anna Nowak",
+        "busy_time": 3.8709677419354835,
+        "idle_time": 10.444444444444443,
+        "utilization": 0.27040560841261896,
+        "tasks_count": 1
+      },
+      {
+        "resource_id": "doctor_ewa",
+        "resource_name": "Dr Ewa Zielinska",
+        "busy_time": 2.0,
+        "idle_time": 12.315412186379927,
+        "utilization": 0.1397095643465198,
+        "tasks_count": 1
+      },
+      {
+        "resource_id": "nurse_marek",
+        "resource_name": "Nurse Marek",
+        "busy_time": 5.370967741935484,
+        "idle_time": 8.944444444444443,
+        "utilization": 0.3751877816725088,
+        "tasks_count": 2
+      },
+      {
+        "resource_id": "lab_tech_1",
+        "resource_name": "Laboratory technician",
+        "busy_time": 4.0,
+        "idle_time": 10.315412186379927,
+        "utilization": 0.2794191286930396,
+        "tasks_count": 2
+      },
+      {
+        "resource_id": "operating_room_1",
+        "resource_name": "Operating room 1",
+        "busy_time": 5.370967741935484,
+        "idle_time": 8.944444444444443,
+        "utilization": 0.3751877816725088,
+        "tasks_count": 2
+      },
+      {
+        "resource_id": "assistant_1",
+        "resource_name": "Universal assistant 1",
+        "busy_time": 4.444444444444445,
+        "idle_time": 9.870967741935482,
+        "utilization": 0.3104656985478218,
+        "tasks_count": 2
+      },
+      {
+        "resource_id": "assistant_2",
+        "resource_name": "Universal assistant 2",
+        "busy_time": 0.0,
+        "idle_time": 14.315412186379927,
+        "utilization": 0.0,
+        "tasks_count": 0
+      }
+    ]
+  }
+}

@@ -1,0 +1,163 @@
+{
+  "name": "Logistics warehouse shift",
+  "description": "A warehouse shift with truck unloading, scanning, pallet movement, sorting, inventory update, and dispatch loading.",
+  "default_optimization_mode": "MinimizeCost",
+  "tasks": [
+    {
+      "id": "l1",
+      "name": "Unload incoming truck",
+      "task_type": "CGT",
+      "duration": 3.0,
+      "dependencies": [],
+      "required_specializations": [],
+      "required_resource_count": 2,
+      "base_cost": 20.0,
+      "description": "Two available resources unload the incoming truck."
+    },
+    {
+      "id": "l2",
+      "name": "Scan items",
+      "task_type": "DT",
+      "duration": 2.0,
+      "dependencies": [
+        "l1"
+      ],
+      "required_specializations": [
+        "WarehouseClerk"
+      ],
+      "required_resource_count": 1,
+      "base_cost": 8.0,
+      "description": "Registered clerk scans items into the system."
+    },
+    {
+      "id": "l3",
+      "name": "Move pallets to buffer",
+      "task_type": "CDT",
+      "duration": 2.5,
+      "dependencies": [
+        "l1"
+      ],
+      "required_specializations": [
+        "ForkliftOperator",
+        "WarehouseClerk"
+      ],
+      "required_resource_count": 2,
+      "base_cost": 15.0,
+      "description": "Forklift operator and clerk move pallets to the buffer area."
+    },
+    {
+      "id": "l4",
+      "name": "Sort packages",
+      "task_type": "CGT",
+      "duration": 3.5,
+      "dependencies": [
+        "l2",
+        "l3"
+      ],
+      "required_specializations": [],
+      "required_resource_count": 3,
+      "base_cost": 12.0,
+      "description": "Sort packages using three available resources."
+    },
+    {
+      "id": "l5",
+      "name": "Update inventory",
+      "task_type": "UT",
+      "duration": 1.5,
+      "dependencies": [
+        "l4"
+      ],
+      "required_specializations": [],
+      "required_resource_count": 1,
+      "base_cost": 5.0,
+      "description": "Universal staff member updates inventory records."
+    },
+    {
+      "id": "l6",
+      "name": "Prepare shipments",
+      "task_type": "GT",
+      "duration": 2.0,
+      "dependencies": [
+        "l5"
+      ],
+      "required_specializations": [],
+      "required_resource_count": 1,
+      "base_cost": 10.0,
+      "description": "Prepare outgoing shipment labels and packs."
+    },
+    {
+      "id": "l7",
+      "name": "Load dispatch truck",
+      "task_type": "CDT",
+      "duration": 2.0,
+      "dependencies": [
+        "l6"
+      ],
+      "required_specializations": [
+        "ForkliftOperator",
+        "WarehouseClerk"
+      ],
+      "required_resource_count": 2,
+      "base_cost": 20.0,
+      "description": "Load the outgoing truck with a forklift operator and clerk."
+    }
+  ],
+  "resources": [
+    {
+      "id": "clerk_1",
+      "name": "Warehouse clerk",
+      "resource_type": "Specialized",
+      "specialization": "WarehouseClerk",
+      "cost_per_time_unit": 32.0,
+      "speed_multiplier": 1.0
+    },
+    {
+      "id": "forklift_1",
+      "name": "Forklift operator 1",
+      "resource_type": "Specialized",
+      "specialization": "ForkliftOperator",
+      "cost_per_time_unit": 45.0,
+      "speed_multiplier": 1.1
+    },
+    {
+      "id": "forklift_2",
+      "name": "Forklift operator 2",
+      "resource_type": "Specialized",
+      "specialization": "ForkliftOperator",
+      "cost_per_time_unit": 42.0,
+      "speed_multiplier": 1.0
+    },
+    {
+      "id": "coordinator_1",
+      "name": "Shift coordinator",
+      "resource_type": "Specialized",
+      "specialization": "Coordinator",
+      "cost_per_time_unit": 38.0,
+      "speed_multiplier": 1.0
+    },
+    {
+      "id": "temp_worker_1",
+      "name": "Temporary worker 1",
+      "resource_type": "Universal",
+      "specialization": null,
+      "cost_per_time_unit": 22.0,
+      "speed_multiplier": 0.9
+    },
+    {
+      "id": "temp_worker_2",
+      "name": "Temporary worker 2",
+      "resource_type": "Universal",
+      "specialization": null,
+      "cost_per_time_unit": 21.0,
+      "speed_multiplier": 0.85
+    },
+    {
+      "id": "temp_worker_3",
+      "name": "Temporary worker 3",
+      "resource_type": "Universal",
+      "specialization": null,
+      "cost_per_time_unit": 20.0,
+      "speed_multiplier": 0.8
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+task_id,task_name,task_type,start_time,finish_time,duration,resource_ids,resource_names,cost
+l1,Unload incoming truck,CGT,0,3.43,3.43,temp_worker_1;temp_worker_2,Temporary worker 1;Temporary worker 2,167.43
+l2,Scan items,DT,3.43,5.43,2,clerk_1,Warehouse clerk,72.00
+l3,Move pallets to buffer,CDT,5.43,7.81,2.38,forklift_1;clerk_1,Forklift operator 1;Warehouse clerk,198.33
+l4,Sort packages,CGT,7.81,11.93,4.12,temp_worker_1;temp_worker_2;temp_worker_3,Temporary worker 1;Temporary worker 2;Temporary worker 3,271.41
+l5,Update inventory,UT,11.93,13.59,1.67,temp_worker_1,Temporary worker 1,41.67
+l6,Prepare shipments,GT,13.59,15.82,2.22,temp_worker_1,Temporary worker 1,58.89
+l7,Load dispatch truck,CDT,15.82,17.72,1.9,forklift_1;clerk_1,Forklift operator 1;Warehouse clerk,166.67

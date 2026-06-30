@@ -1,0 +1,188 @@
+{
+  "scenario_name": "Logistics warehouse shift",
+  "scenario_description": "A warehouse shift with truck unloading, scanning, pallet movement, sorting, inventory update, and dispatch loading.",
+  "optimization_mode": "MinimizeCost",
+  "created_at": "2026-06-30T12:50:25.507944",
+  "scheduled_tasks": [
+    {
+      "task_id": "l1",
+      "task_name": "Unload incoming truck",
+      "task_type": "CGT",
+      "start_time": 0.0,
+      "finish_time": 3.4285714285714284,
+      "duration": 3.4285714285714284,
+      "assigned_resource_ids": [
+        "temp_worker_1",
+        "temp_worker_2"
+      ],
+      "assigned_resource_names": [
+        "Temporary worker 1",
+        "Temporary worker 2"
+      ],
+      "cost": 167.42857142857142
+    },
+    {
+      "task_id": "l2",
+      "task_name": "Scan items",
+      "task_type": "DT",
+      "start_time": 3.4285714285714284,
+      "finish_time": 5.428571428571429,
+      "duration": 2.0,
+      "assigned_resource_ids": [
+        "clerk_1"
+      ],
+      "assigned_resource_names": [
+        "Warehouse clerk"
+      ],
+      "cost": 72.0
+    },
+    {
+      "task_id": "l3",
+      "task_name": "Move pallets to buffer",
+      "task_type": "CDT",
+      "start_time": 5.428571428571429,
+      "finish_time": 7.80952380952381,
+      "duration": 2.380952380952381,
+      "assigned_resource_ids": [
+        "forklift_1",
+        "clerk_1"
+      ],
+      "assigned_resource_names": [
+        "Forklift operator 1",
+        "Warehouse clerk"
+      ],
+      "cost": 198.33333333333334
+    },
+    {
+      "task_id": "l4",
+      "task_name": "Sort packages",
+      "task_type": "CGT",
+      "start_time": 7.80952380952381,
+      "finish_time": 11.92717086834734,
+      "duration": 4.11764705882353,
+      "assigned_resource_ids": [
+        "temp_worker_1",
+        "temp_worker_2",
+        "temp_worker_3"
+      ],
+      "assigned_resource_names": [
+        "Temporary worker 1",
+        "Temporary worker 2",
+        "Temporary worker 3"
+      ],
+      "cost": 271.4117647058824
+    },
+    {
+      "task_id": "l5",
+      "task_name": "Update inventory",
+      "task_type": "UT",
+      "start_time": 11.92717086834734,
+      "finish_time": 13.593837535014005,
+      "duration": 1.6666666666666665,
+      "assigned_resource_ids": [
+        "temp_worker_1"
+      ],
+      "assigned_resource_names": [
+        "Temporary worker 1"
+      ],
+      "cost": 41.666666666666664
+    },
+    {
+      "task_id": "l6",
+      "task_name": "Prepare shipments",
+      "task_type": "GT",
+      "start_time": 13.593837535014005,
+      "finish_time": 15.816059757236228,
+      "duration": 2.2222222222222223,
+      "assigned_resource_ids": [
+        "temp_worker_1"
+      ],
+      "assigned_resource_names": [
+        "Temporary worker 1"
+      ],
+      "cost": 58.88888888888889
+    },
+    {
+      "task_id": "l7",
+      "task_name": "Load dispatch truck",
+      "task_type": "CDT",
+      "start_time": 15.816059757236228,
+      "finish_time": 17.720821661998134,
+      "duration": 1.9047619047619047,
+      "assigned_resource_ids": [
+        "forklift_1",
+        "clerk_1"
+      ],
+      "assigned_resource_names": [
+        "Forklift operator 1",
+        "Warehouse clerk"
+      ],
+      "cost": 166.66666666666666
+    }
+  ],
+  "summary": {
+    "scenario_name": "Logistics warehouse shift",
+    "optimization_mode": "MinimizeCost",
+    "total_execution_time": 17.720821661998134,
+    "total_cost": 976.3958916900093,
+    "average_resource_utilization": 0.27143534583336465,
+    "resource_usage": [
+      {
+        "resource_id": "clerk_1",
+        "resource_name": "Warehouse clerk",
+        "busy_time": 6.2857142857142865,
+        "idle_time": 11.435107376283847,
+        "utilization": 0.35470783497549924,
+        "tasks_count": 3
+      },
+      {
+        "resource_id": "forklift_1",
+        "resource_name": "Forklift operator 1",
+        "busy_time": 4.285714285714286,
+        "idle_time": 13.435107376283849,
+        "utilization": 0.24184625111965855,
+        "tasks_count": 2
+      },
+      {
+        "resource_id": "forklift_2",
+        "resource_name": "Forklift operator 2",
+        "busy_time": 0.0,
+        "idle_time": 17.720821661998134,
+        "utilization": 0.0,
+        "tasks_count": 0
+      },
+      {
+        "resource_id": "coordinator_1",
+        "resource_name": "Shift coordinator",
+        "busy_time": 0.0,
+        "idle_time": 17.720821661998134,
+        "utilization": 0.0,
+        "tasks_count": 0
+      },
+      {
+        "resource_id": "temp_worker_1",
+        "resource_name": "Temporary worker 1",
+        "busy_time": 11.435107376283845,
+        "idle_time": 6.285714285714288,
+        "utilization": 0.6452921650245006,
+        "tasks_count": 4
+      },
+      {
+        "resource_id": "temp_worker_2",
+        "resource_name": "Temporary worker 2",
+        "busy_time": 7.546218487394958,
+        "idle_time": 10.174603174603176,
+        "utilization": 0.42583908530481057,
+        "tasks_count": 2
+      },
+      {
+        "resource_id": "temp_worker_3",
+        "resource_name": "Temporary worker 3",
+        "busy_time": 4.11764705882353,
+        "idle_time": 13.603174603174605,
+        "utilization": 0.23236208440908374,
+        "tasks_count": 1
+      }
+    ]
+  }
+}
