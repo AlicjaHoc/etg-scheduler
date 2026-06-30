@@ -43,6 +43,7 @@ python -m etg_scheduler
 ### macOS or Linux
 
 ```bash
+cd ~/etg-scheduler
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
@@ -50,10 +51,14 @@ pip install -r requirements.txt
 python -m etg_scheduler
 ```
 
-If your system exposes Python as `python3` only, use:
+On Linux systems such as Pop!_OS or Ubuntu, the global command may be `python3` instead of `python`. After the virtual environment is activated, use `python` because it points to `.venv/bin/python`.
+
+For later runs:
 
 ```bash
-python3 -m etg_scheduler
+cd ~/etg-scheduler
+source .venv/bin/activate
+python -m etg_scheduler
 ```
 
 ## Command-Line Usage
@@ -61,12 +66,14 @@ python3 -m etg_scheduler
 Interactive mode:
 
 ```bash
+source .venv/bin/activate
 python -m etg_scheduler
 ```
 
 Run a specific scenario:
 
 ```bash
+source .venv/bin/activate
 python -m etg_scheduler --scenario scenarios/hospital.json
 ```
 

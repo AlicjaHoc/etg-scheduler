@@ -221,10 +221,21 @@ python -m etg_scheduler
 ### Terminal macOS/Linux
 
 ```bash
+cd ~/etg-scheduler
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
 pip install -r requirements.txt
+python -m etg_scheduler
+```
+
+Na Pop!_OS i Ubuntu komenda `python` moze nie istniec globalnie. To normalne. Do utworzenia srodowiska uzyj `python3`, a po aktywacji `.venv` uzywaj `python`.
+
+Kolejne uruchomienia:
+
+```bash
+cd ~/etg-scheduler
+source .venv/bin/activate
 python -m etg_scheduler
 ```
 

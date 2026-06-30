@@ -79,10 +79,21 @@ python -m etg_scheduler
 ## macOS or Linux
 
 ```bash
+cd ~/etg-scheduler
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
 pip install -r requirements.txt
+python -m etg_scheduler
+```
+
+On Pop!_OS and Ubuntu, `python` may not exist globally. That is fine. Use `python3` to create the virtual environment, then activate it. After activation, use `python`.
+
+Later runs only need:
+
+```bash
+cd ~/etg-scheduler
+source .venv/bin/activate
 python -m etg_scheduler
 ```
 
@@ -91,12 +102,14 @@ python -m etg_scheduler
 Interactive run:
 
 ```bash
+source .venv/bin/activate
 python -m etg_scheduler
 ```
 
 Run hospital scenario:
 
 ```bash
+source .venv/bin/activate
 python -m etg_scheduler --scenario scenarios/hospital.json --mode Balanced
 ```
 
