@@ -1,8 +1,8 @@
-from __future__ import annotations
-
 import csv
 import json
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
+from datetime import datetime
+from enum import Enum
 from pathlib import Path
 
 from etg_scheduler.models.schedule import ScheduleResult
@@ -36,7 +36,20 @@ class ScheduleExporter:
 
     def _write_json(self, result: ScheduleResult, path: Path) -> None:
         with path.open("w", encoding="utf-8") as file:
-            json.dump(result.model_dump(mode="json"), file, indent=2, ensure_ascii=False)
+            json.dump(self._plain_value(result), file, indent=2, ensure_ascii=False)
+
+    def _plain_value(self, value):
+        if hasattr(value, "__dataclass_fields__"):
+            return self._plain_value(asdict(value))
+        if isinstance(value, dict):
+            return {key: self._plain_value(item) for key, item in value.items()}
+        if isinstance(value, list):
+            return [self._plain_value(item) for item in value]
+        if isinstance(value, Enum):
+            return value.value
+        if isinstance(value, datetime):
+            return value.isoformat(timespec="seconds")
+        return value
 
     def _write_csv(self, result: ScheduleResult, path: Path) -> None:
         with path.open("w", encoding="utf-8", newline="") as file:
@@ -71,56 +84,49 @@ class ScheduleExporter:
 
     def _write_report(self, result: ScheduleResult, path: Path) -> None:
         lines = [
-            f"# ETG Schedule Report: {result.scenario_name}",
+            f"# ETG schedule report - {result.scenario_name}",
             "",
             f"Generated at: {result.created_at.isoformat(timespec='seconds')}",
-            f"Optimization mode: {result.optimization_mode.value}",
+            f"Mode: {result.optimization_mode.value}",
             "",
-            "## Scenario",
+            "Scenario",
             "",
             result.scenario_description,
             "",
-            "## Summary",
+            "Summary",
             "",
-            f"- Total execution time: {format_number(result.summary.total_execution_time)}",
-            f"- Total cost: {format_money(result.summary.total_cost)}",
-            f"- Average resource utilization: {format_percent(result.summary.average_resource_utilization)}",
+            f"Total execution time: {format_number(result.summary.total_execution_time)}",
+            f"Total cost: {format_money(result.summary.total_cost)}",
+            f"Average resource utilization: {format_percent(result.summary.average_resource_utilization)}",
             "",
-            "## Schedule",
+            "Schedule",
             "",
-            "| Task | Type | Start | Finish | Resources | Cost |",
-            "| --- | --- | ---: | ---: | --- | ---: |",
         ]
 
         for task in result.scheduled_tasks:
             lines.append(
-                "| "
-                f"{task.task_name} | "
-                f"{task.task_type.value} | "
-                f"{format_number(task.start_time)} | "
-                f"{format_number(task.finish_time)} | "
-                f"{', '.join(task.assigned_resource_names)} | "
-                f"{format_money(task.cost)} |"
+                f"{task.task_id} {task.task_name}: "
+                f"{task.task_type.value}, "
+                f"{format_number(task.start_time)} -> {format_number(task.finish_time)}, "
+                f"{', '.join(task.assigned_resource_names)}, "
+                f"cost {format_money(task.cost)}"
             )
 
         lines.extend(
             [
                 "",
-                "## Resource usage",
+                "Resource usage",
                 "",
-                "| Resource | Busy time | Idle time | Utilization | Tasks |",
-                "| --- | ---: | ---: | ---: | ---: |",
             ]
         )
 
         for usage in result.summary.resource_usage:
             lines.append(
-                "| "
-                f"{usage.resource_name} | "
-                f"{format_number(usage.busy_time)} | "
-                f"{format_number(usage.idle_time)} | "
-                f"{format_percent(usage.utilization)} | "
-                f"{usage.tasks_count} |"
+                f"{usage.resource_name}: "
+                f"busy {format_number(usage.busy_time)}, "
+                f"idle {format_number(usage.idle_time)}, "
+                f"utilization {format_percent(usage.utilization)}, "
+                f"tasks {usage.tasks_count}"
             )
 
         path.write_text("\n".join(lines) + "\n", encoding="utf-8")

@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from itertools import combinations
 
 from etg_scheduler.models.enums import ResourceType, TaskType

@@ -1,15 +1,11 @@
-from __future__ import annotations
-
+from dataclasses import dataclass, field
 from datetime import datetime
-
-from pydantic import BaseModel, ConfigDict, Field
 
 from etg_scheduler.models.enums import OptimizationMode, TaskType
 
 
-class ScheduledTask(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
+@dataclass
+class ScheduledTask:
     task_id: str
     task_name: str
     task_type: TaskType
@@ -21,9 +17,8 @@ class ScheduledTask(BaseModel):
     cost: float
 
 
-class ResourceUsage(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
+@dataclass
+class ResourceUsage:
     resource_id: str
     resource_name: str
     busy_time: float
@@ -32,9 +27,8 @@ class ResourceUsage(BaseModel):
     tasks_count: int
 
 
-class ScheduleSummary(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
+@dataclass
+class ScheduleSummary:
     scenario_name: str
     optimization_mode: OptimizationMode
     total_execution_time: float
@@ -43,12 +37,11 @@ class ScheduleSummary(BaseModel):
     resource_usage: list[ResourceUsage]
 
 
-class ScheduleResult(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
+@dataclass
+class ScheduleResult:
     scenario_name: str
     scenario_description: str
     optimization_mode: OptimizationMode
-    created_at: datetime = Field(default_factory=datetime.now)
     scheduled_tasks: list[ScheduledTask]
     summary: ScheduleSummary
+    created_at: datetime = field(default_factory=datetime.now)

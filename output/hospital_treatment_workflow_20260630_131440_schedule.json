@@ -2,7 +2,6 @@
   "scenario_name": "Hospital treatment workflow",
   "scenario_description": "A small hospital process from registration through examination, laboratory work, surgery, recovery, and discharge.",
   "optimization_mode": "Balanced",
-  "created_at": "2026-06-30T12:50:15.063927",
   "scheduled_tasks": [
     {
       "task_id": "h1",
@@ -174,11 +173,12 @@
       {
         "resource_id": "assistant_2",
         "resource_name": "Universal assistant 2",
-        "busy_time": 0.0,
+        "busy_time": 0,
         "idle_time": 14.315412186379927,
         "utilization": 0.0,
         "tasks_count": 0
       }
     ]
-  }
+  },
+  "created_at": "2026-06-30T13:14:40"
 }

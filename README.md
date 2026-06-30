@@ -2,7 +2,7 @@
 
 ETG Scheduler is a Python console application for an academic Extended Task Graph scheduling project.
 
-The program loads a scenario from JSON, validates the task graph and resource constraints, creates a schedule with a greedy list scheduling algorithm, prints readable console tables, and exports the result to JSON, CSV, and Markdown.
+The program loads a scenario from JSON, validates the task graph and resource constraints, creates a schedule with a greedy list scheduling algorithm, prints simple console output, and exports the result to JSON, CSV, and Markdown.
 
 ## Features
 
@@ -12,7 +12,7 @@ The program loads a scenario from JSON, validates the task graph and resource co
 - Resource cost and speed multiplier support
 - Validation of missing dependencies, cycles, task rules, and resource compatibility
 - Three optimization modes: `MinimizeTime`, `MinimizeCost`, `Balanced`
-- Simple console interface with menus, tables, and timeline output
+- Simple console interface with menus, lists, and timeline output
 - Example hospital, production line, and logistics warehouse scenarios
 - Export to `output/` as JSON, CSV, and Markdown report
 - Tests for validation, scheduling, and example scenarios
@@ -21,7 +21,7 @@ The program loads a scenario from JSON, validates the task graph and resource co
 
 - Python 3.11 or Python 3.12
 - Local virtual environment
-- Packages from `requirements.txt`
+- `pytest` from `requirements.txt` if you want to run tests
 
 ## Quick Start
 

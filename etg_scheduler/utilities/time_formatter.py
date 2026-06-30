@@ -1,6 +1,3 @@
-from __future__ import annotations
-
-
 def format_number(value: float) -> str:
     text = f"{value:.2f}"
     return text.rstrip("0").rstrip(".")

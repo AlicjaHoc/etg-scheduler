@@ -151,7 +151,7 @@ Przed harmonogramowaniem program sprawdza:
 - czy zadanie typu `UT` nie wymaga specjalizacji,
 - czy kazde zadanie ma przynajmniej jedno mozliwe dopasowanie zasobow.
 
-Do sprawdzania cykli uzyta jest biblioteka `networkx`.
+Wykrywanie cyklu jest zrobione w prosty sposob w kodzie programu, bez dodatkowej biblioteki grafowej.
 
 ## Algorytm harmonogramowania
 

@@ -1,11 +1,8 @@
-from __future__ import annotations
-
 import argparse
 from pathlib import Path
 
 from etg_scheduler.models.enums import OptimizationMode
 from etg_scheduler.services.console_ui import ConsoleUI
-from etg_scheduler.services.cost_calculator import CostCalculator
 from etg_scheduler.services.exporter import ScheduleExporter
 from etg_scheduler.services.greedy_scheduler import GreedyScheduler
 from etg_scheduler.services.resource_matcher import ResourceMatcher
@@ -32,7 +29,7 @@ def main(argv: list[str] | None = None) -> int:
     loader = ScenarioLoader()
     matcher = ResourceMatcher()
     validator = ScenarioValidator(matcher)
-    scheduler = GreedyScheduler(matcher, CostCalculator())
+    scheduler = GreedyScheduler(matcher)
     exporter = ScheduleExporter()
     parser = build_parser()
     args = parser.parse_args(argv)

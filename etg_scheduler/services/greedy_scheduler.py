@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from dataclasses import dataclass
 
 from etg_scheduler.models.enums import OptimizationMode
@@ -7,7 +5,6 @@ from etg_scheduler.models.resource import Resource
 from etg_scheduler.models.scenario import Scenario
 from etg_scheduler.models.schedule import ResourceUsage, ScheduledTask, ScheduleResult, ScheduleSummary
 from etg_scheduler.models.task import Task
-from etg_scheduler.services.cost_calculator import CostCalculator
 from etg_scheduler.services.resource_matcher import ResourceMatcher
 
 
@@ -22,9 +19,8 @@ class ScheduleCandidate:
 
 
 class GreedyScheduler:
-    def __init__(self, matcher: ResourceMatcher | None = None, cost_calculator: CostCalculator | None = None) -> None:
+    def __init__(self, matcher: ResourceMatcher | None = None) -> None:
         self.matcher = matcher or ResourceMatcher()
-        self.cost_calculator = cost_calculator or CostCalculator()
 
     def schedule(self, scenario: Scenario, mode: OptimizationMode) -> ScheduleResult:
         remaining_tasks = {task.id: task for task in scenario.tasks}
@@ -79,9 +75,9 @@ class GreedyScheduler:
             for assignment in self.matcher.generate_assignments(task, resources):
                 resource_ready_time = max(resource_available_at[resource.id] for resource in assignment)
                 start_time = max(dependency_finish_time, resource_ready_time)
-                duration = self.cost_calculator.adjusted_duration(task, assignment)
+                duration = self._adjusted_duration(task, assignment)
                 finish_time = start_time + duration
-                cost = self.cost_calculator.task_cost(task, assignment, duration)
+                cost = self._task_cost(task, assignment, duration)
                 candidates.append(
                     ScheduleCandidate(
                         task=task,
@@ -93,6 +89,13 @@ class GreedyScheduler:
                     )
                 )
         return candidates
+
+    def _adjusted_duration(self, task: Task, resources: list[Resource]) -> float:
+        average_speed = sum(resource.speed_multiplier for resource in resources) / len(resources)
+        return task.duration / average_speed
+
+    def _task_cost(self, task: Task, resources: list[Resource], duration: float) -> float:
+        return sum(resource.cost_per_time_unit for resource in resources) * duration + task.base_cost
 
     def _select_candidate(self, candidates: list[ScheduleCandidate], mode: OptimizationMode) -> ScheduleCandidate:
         if mode == OptimizationMode.MINIMIZE_TIME:
